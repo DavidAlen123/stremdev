@@ -3,7 +3,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 from pytz import UTC
-
+import local
 
 # Set page configuration
 st.set_page_config(
@@ -52,6 +52,22 @@ df['Total Price'] = pd.to_numeric(df['Total Price'], errors='coerce')
 # Convert the Quantity column to numeric
 df['Quantity'] = pd.to_numeric(df['Quantity'], errors='coerce')
 
+# Set the locale to Indian English
+locale.setlocale(locale.LC_NUMERIC, 'en_IN')
+
+# Define a function to format numbers in Indian format
+def format_indian_format(num):
+    return locale.format_string("%.2f", num, grouping=True)
+
+# Apply the formatting function to the 'Total Price' column
+df['Total Price'] = df['Total Price'].apply(format_indian_format)
+df['Unit Price'] = df['Unit Price'].apply(format_indian_format)
+# Convert the Quantity column to numeric
+df['Quantity'] = pd.to_numeric(df['Quantity'], errors='coerce')
+
+
+
+
 
 st.write(df)
 
@@ -99,6 +115,7 @@ else:
     df_filtered = date_filter[date_filter["Email"].isin(Email) & df["Sales Person"].isin(Sales_Person)]
 
 # Create separate dataframes for cancelled and non-cancelled orders
+df_filtered['Total Price'] = pd.to_numeric(df_filtered['Total Price'], errors='coerce')
 cancelled_orders = df_filtered[df_filtered["Cancelled At"].notnull()]
 non_cancelled_orders = df_filtered[df_filtered["Cancelled At"].isnull()]
 
