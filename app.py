@@ -48,19 +48,11 @@ df['Cancelled At'] = pd.to_datetime(df['Cancelled At'])
 
 df['Total Price'] = pd.to_numeric(df['Total Price'], errors='coerce')
 
-df['Unit Price'] = pd.to_numeric(df['Unit Price'], errors='coerce')
-# Set the locale to Indian English
-locale.setlocale(locale.LC_NUMERIC, 'en_IN')
 
-# Define a function to format numbers in Indian format
-def format_indian_format(num):
-    return locale.format_string("%.2f", num, grouping=True)
-
-# Apply the formatting function to the 'Total Price' column
-df['Total Price'] = df['Total Price'].apply(format_indian_format)
-df['Unit Price'] = df['Unit Price'].apply(format_indian_format)
 # Convert the Quantity column to numeric
 df['Quantity'] = pd.to_numeric(df['Quantity'], errors='coerce')
+
+
 st.write(df)
 
 # Drop rows with specific salesperson names
@@ -107,15 +99,34 @@ else:
     df_filtered = date_filter[date_filter["Email"].isin(Email) & df["Sales Person"].isin(Sales_Person)]
 
 # Create separate dataframes for cancelled and non-cancelled orders
-df_filtered['Total Price'] = pd.to_numeric(df_filtered['Total Price'], errors='coerce')
 cancelled_orders = df_filtered[df_filtered["Cancelled At"].notnull()]
 non_cancelled_orders = df_filtered[df_filtered["Cancelled At"].isnull()]
 
 # Grouping the data by salesperson and summing up the total sales for each group
-sales_data = non_cancelled_orders.groupby('Sales Person')['Total Price'].sum().reset_index(name='Sales Amount')
+cancelled_sales = cancelled_orders.groupby('Sales Person')['Total Price'].sum().reset_index()
+non_cancelled_sales = non_cancelled_orders.groupby('Sales Person')['Total Price'].sum().reset_index()
 
-# Grouping the data by salesperson and summing up the total cancelled amount for each group
-cancel_data = cancelled_orders.groupby('Sales Person')['Total Price'].sum().reset_index(name='Cancelled Amount')
+# Merge the two dataframes on 'Sales Person'
+merged_sales = pd.merge(cancelled_sales, non_cancelled_sales, on='Sales Person', suffixes=('_Cancelled', '_Non_Cancelled'))
+
+# Calculate total amount of canceled orders for each salesperson
+cancelled_orders_total_amount = cancelled_orders.groupby('Sales Person')['Total Price'].sum().reset_index(name='Total Amount Cancelled')
+
+# Calculate total number of cancelled orders for each salesperson
+cancelled_orders_count = cancelled_orders.groupby('Sales Person').size().reset_index(name='Total Orders Cancelled')
+
+# Calculate total amount of non-cancelled orders for each salesperson
+non_cancelled_orders_total_amount = non_cancelled_orders.groupby('Sales Person')['Total Price'].sum().reset_index(name='Sales Amount')
+
+# Calculate total number of non-cancelled orders for each salesperson
+non_cancelled_orders_count = non_cancelled_orders.groupby('Sales Person').size().reset_index(name='Total Sales')
+
+# Merge total amount and total number of Sales orders
+sale_data = non_cancelled_orders_count.merge(non_cancelled_orders_total_amount, on='Sales Person')
+
+# Merge total amt and total number of cancel order
+cancel_data = cancelled_orders_count.merge(cancelled_orders_total_amount, on='Sales Person')
+
 
 # Display non-cancelled order details
 st.subheader("Sales Order Details:")
@@ -129,7 +140,7 @@ col1,col2 = st.columns(2)
 with col1:
     # Display the Sales data
     st.subheader("Sales Order Summary:")
-    st.write(sales_data)
+    st.write(sale_data)
 with col2:
     # Display the Cancel data
     st.subheader("Cancelled Order Summary:")
@@ -138,7 +149,6 @@ with col2:
 
 # Calculate total price for each selected SKU
 # Filter out cancelled orders from the original DataFrame
-df_filtered['Total Price'] = pd.to_numeric(df_filtered['Total Price'], errors='coerce')
 df_filtered_non_cancelled = df_filtered[df_filtered['Cancelled At'].isnull()]
 
 # Group the data by SKU and sum up the total price and quantity for each SKU
@@ -152,7 +162,9 @@ top_sku_sales = sku_summary.sort_values(by='Total Price', ascending=False).head(
 
 # Display the top SKUs with quantity, title, vendor, and total price
 st.subheader(f"Top {top_sku_count} SKUs with Highest Sales:")
-st.write(top_sku_sales[['SKU','Quantity', 'Total Price']])
+st.write(top_sku_sales[['SKU','Title', 'Quantity', 'Total Price']])
+
+
 
 #####################################################################3
 
@@ -175,14 +187,16 @@ top_vendor_sales = vendor_summary.sort_values(by='Total Price', ascending=False)
 st.subheader(f"Top {top_vendor_count} Vendors with Highest Sales:")
 st.write(top_vendor_sales[['Vendor', 'Title', 'Total Price']])
 
+
+
 import plotly.express as px
 
 # Visualize Sales Order Summary
-fig1 = px.bar(sales_data, x='Sales Person', y='Sales Amount', title='Sales Amount by Sales Person')
+fig1 = px.bar(sale_data, x='Sales Person', y='Sales Amount', title='Sales Amount by Sales Person')
 st.plotly_chart(fig1)
 
 # Visualize Cancelled Order Summary
-fig2 = px.bar(cancel_data, x='Sales Person', y='Cancelled Amount', title='Cancelled Amount by Sales Person')
+fig2 = px.bar(cancel_data, x='Sales Person', y='Total Amount Cancelled', title='Cancelled Amount by Sales Person')
 st.plotly_chart(fig2)
 
 # Visualize Top SKUs with Highest Sales
@@ -192,3 +206,12 @@ st.plotly_chart(fig3)
 # Visualize Top Vendors with Highest Sales
 fig4 = px.bar(top_vendor_sales, x='Vendor', y='Total Price', title=f'Top {top_vendor_count} Vendors with Highest Sales')
 st.plotly_chart(fig4)
+
+
+
+
+
+
+
+
+
