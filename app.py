@@ -11,8 +11,7 @@ class SessionState:
 
 # Create an instance of SessionState
 session_state = SessionState(authenticated=False)
-
-@st.cache_resource
+@st.cache(allow_output_mutation=True)
 def get_session_state():
     return session_state
 
