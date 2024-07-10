@@ -62,16 +62,7 @@ if is_authenticated:
 
         # Retrieve credentials from Streamlit secrets
         credentials = {
-            "type": "service_account",
-            "project_id": "solar-haven-307711",
-            "private_key_id": "38d9bf04a9dd340e278a6f4d30bf4d15027f16d3",
-            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDYzfd14oCERH3y\nElNgD7HiqbFCnGNvX9T/jYREijWyWV/u5b7vuHOrudES/7l1PiAogUsfZNdL4gZx\nP2+SCHgNG5NAevDOzfromaEr5denbs6Q0Eiyv0XruHffk7P42J28NmWV3XK19wiK\nqS4rgUGKmTCfokgDzJm77IZB7nualGj5EznYAWVI8pko6UwGFVZ7LPgLStOuuIGZ\n9Td+rqyHj8nv5q6cwcNX2kpoI1dLtxuc34pkOhVk3O9Wvw/9rnKYpb2Bt1pvCorv\niWzKM+v2JkENziGQ4OV2dANletbIcRBLbCXRrxO1xVmUTd0ySgH6IhnrEt5/EiJu\nCcnPkPABAgMBAAECggEACK1drSMun5yaKdkf6yVVqku+Y3sc47VDMiM42wFpGsVG\n+KnLVY7dWk8qlgcUJiQhZ12dYxlHIKtgNKIkVgTuwR+MajVBdBV8aFjVwYsGcZYW\nwGcFsdnD86ZDbfhcaKZK0eCfejsNv0iu19XjmiwnMmPlNU5qcXR75rCVwwfHfK1H\nE2VBbYgDhcnv3vgXz4cTOIqfDujsLkJUQh4XTeuoToB+iGqbg8mubEsWBXQUUkwN\nfoE7McTj9zZvcwOKD5vGraliwiUlbtFJHFkyThGytt1AGIt8YW6tPsJI1AibXfYq\n50dIOjV6JO67xozbEHTS6AoI+Ikis+le8SNKi4HeUQKBgQD0RlGDft3VemjohIKc\nuLTdKbIgFGsXfG7MtWmQTpBX4dDjE0d0NDwA/SL0Qxs8X4uOKBZIa1hpxcKZC3zq\nld5vbYqfk+VvAG0Cx4KeDjPioRdAwH6ZEwkgP6zeCJNkTafCkHtA8GJMjB5iySQv\n+cYDXVkZNQD1tu2Bc8pWDpaiHQKBgQDjNhdrtNaNMN84HhwLLd0hnW04C/UAsU+c\nDyltmpoQHjOHOWyU19zkzxnhRFnRGgE3IAAKJWDE46zdbHFgVyOgQjr9kno4V84L\njyhqR6mu5savUMR2ip9j3bd5EjLy9gAqvx6eRMgCj1yGbjAO4tXYExRx94xGLbxP\nh/AJyCjgNQKBgQCBp0Uit1bFNWizaYnt5zfQX4406sGAwMIKk4uJVbnVe30k2ZnG\neucSW0mPPoMZQ1lORca1/4v48Ed+dhOCa7OZjxnR420WwrIZlI2mmME/W+N8se9A\nDlN8s29slj6tMW6Gnatd53k1SfXi1wIHGNrZ9FUTRQfSY5qiaDQQA0Q+nQKBgA9g\nMreMNlS5sPFoQDeVc/h5YdHAJWVVmnCSKhiLtM9Qa+ZDwZBVB1LInRS8fmODIf/r\n/3SwUNsiGSmm1AlT/Eo1ES7lwbWcY4outupyTQ5T+bAVhCYNfXnRoD/mNmJwuVQr\nONQ3DV32+6jxPflT6mrD58dKnEiHgc3UAi93RyTdAoGAR9057eBWcHbQfLy4AZ3H\n2L2Su6UsYQOJhFn+b7IkSon/WAwJLGTYFQjpoz3fi9xZiMzfQEEJJEq/966/nJTf\nrbPNAVdyBBCFOqQpmbz2FTpBSwwQTba65xSgyHMgtpLg9SfZ2t1g1Ocqm+PA8QDo\nhJSZRrmwzwx+KDx81P2EvR4=\n-----END PRIVATE KEY-----\n",
-            "client_email": "inventory-tracker@solar-haven-307711.iam.gserviceaccount.com",
-            "client_id": "104221851914321462233",
-            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-            "token_uri": "https://oauth2.googleapis.com/token",
-            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/inventory-tracker%40solar-haven-307711.iam.gserviceaccount.com"
+         
         }
 
         # Authenticate with credentials
